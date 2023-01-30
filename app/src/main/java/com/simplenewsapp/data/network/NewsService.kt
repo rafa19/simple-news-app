@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface CommonService {
+interface NewsService {
 
     @GET("top-headlines?country=us")
     suspend fun getTopHeadlines(

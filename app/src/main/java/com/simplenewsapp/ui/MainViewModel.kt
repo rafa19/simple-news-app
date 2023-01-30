@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val commonDao: CommonDao) : ViewModel() {
+class MainViewModel @Inject constructor(private val commonDao: NewsDao) : ViewModel() {
 
     private var newsResponse: ArticleResponse? = null
     private val _newsList: MutableLiveData<ApiResponse<List<Article>>> = MutableLiveData()

@@ -3,7 +3,7 @@ package com.simplenewsapp.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.simplenewsapp.BuildConfig
-import com.simplenewsapp.data.network.CommonService
+import com.simplenewsapp.data.network.NewsService
 import com.simplenewsapp.di.util.AuthenticationInterceptor
 import dagger.Module
 import dagger.Provides
@@ -62,8 +62,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideCommonService(retrofit: Retrofit): CommonService =
-        retrofit.create(CommonService::class.java)
+    fun provideNewsService(retrofit: Retrofit): NewsService =
+        retrofit.create(NewsService::class.java)
 
 
 }

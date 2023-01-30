@@ -2,7 +2,7 @@ package com.simplenewsapp.data.network
 
 import javax.inject.Inject
 
-class CommonDao @Inject constructor(private val commonService: CommonService) : BaseDataSource() {
+class NewsDao @Inject constructor(private val commonService: NewsService) : BaseDataSource() {
 
     suspend fun getTopHeadlines(page: Int, pageSize: Int) = getResult {
         commonService.getTopHeadlines(page, pageSize)
