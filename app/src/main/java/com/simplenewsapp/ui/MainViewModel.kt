@@ -16,20 +16,20 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val commonDao: CommonDao) : ViewModel() {
 
     private var newsResponse: ArticleResponse? = null
-    private val _newsList: MutableLiveData<Resource<List<Article>>> = MutableLiveData()
-    val newsList: LiveData<Resource<List<Article>>> = _newsList
+    private val _newsList: MutableLiveData<ApiResponse<List<Article>>> = MutableLiveData()
+    val newsList: LiveData<ApiResponse<List<Article>>> = _newsList
 
-    private val _headline: MutableLiveData<Resource<Article>> = MutableLiveData()
-    val headline: LiveData<Resource<Article>> = _headline
+    private val _headline: MutableLiveData<ApiResponse<Article>> = MutableLiveData()
+    val headline: LiveData<ApiResponse<Article>> = _headline
 
     fun getNewsList(newsPage: Int) {
         viewModelScope.launch {
-            _newsList.value = Resource.loading()
+            _newsList.value = ApiResponse.loading()
             _newsList.value = handleNewsListResponse(commonDao.getNewsList(newsPage, Constants.PAGE_SIZE))
         }
     }
 
-    private fun handleNewsListResponse(response: Resource<ArticleResponse>): Resource<List<Article>> {
+    private fun handleNewsListResponse(response: ApiResponse<ArticleResponse>): ApiResponse<List<Article>> {
         if (response.status == Status.SUCCESS) {
             response.data?.let {
                 if (newsResponse == null) {
@@ -39,15 +39,15 @@ class MainViewModel @Inject constructor(private val commonDao: CommonDao) : View
                     val newNews = it.articles
                     oldNews?.addAll(newNews.orEmpty())
                 }
-                return Resource.success(it.articles.orEmpty())
+                return ApiResponse.success(it.articles.orEmpty())
             }
         }
-        return Resource.error(response.throwable!!)
+        return ApiResponse.error(response.throwable!!)
     }
 
     fun getHeadlines() {
         viewModelScope.launch {
-            _headline.value = Resource.loading()
+            _headline.value = ApiResponse.loading()
             //we could get only one news and show it,
             //but for demonstration purpose just getting 10 news and later will sort
             _headline.value =
@@ -55,18 +55,18 @@ class MainViewModel @Inject constructor(private val commonDao: CommonDao) : View
         }
     }
 
-    private fun handleHeadlineResponse(response: Resource<ArticleResponse>): Resource<Article> {
+    private fun handleHeadlineResponse(response: ApiResponse<ArticleResponse>): ApiResponse<Article> {
         if (response.status == Status.SUCCESS) {
             response.data?.let { it ->
                 if (!it.articles.isNullOrEmpty()) {
                     //sorting list to get the latest headline
                     val sortedList =
                         it.articles?.sortedByDescending { article -> article._publishedAt }
-                    return Resource.success(sortedList?.get(0)!!)
+                    return ApiResponse.success(sortedList?.get(0)!!)
                 }
             }
         }
-        return Resource.error(response.throwable!!)
+        return ApiResponse.error(response.throwable!!)
     }
 
 }

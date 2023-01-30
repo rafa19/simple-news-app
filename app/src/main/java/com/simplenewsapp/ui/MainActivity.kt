@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.simplenewsapp.R
 import com.simplenewsapp.data.model.Article
-import com.simplenewsapp.data.network.Resource
+import com.simplenewsapp.data.network.ApiResponse
 import com.simplenewsapp.data.network.Status
 import com.simplenewsapp.databinding.ActivityMainBinding
 import com.simplenewsapp.ui.custom.ProgressDialog
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun consumeNewsListResult(resource: Resource<List<Article>>) {
+    private fun consumeNewsListResult(resource: ApiResponse<List<Article>>) {
         when (resource.status) {
             Status.LOADING -> showLoading()
             Status.ERROR -> {
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun consumeHeadlinesResult(resource: Resource<Article>) {
+    private fun consumeHeadlinesResult(resource: ApiResponse<Article>) {
         when (resource.status) {
             Status.LOADING -> showLoading()
             Status.ERROR -> {

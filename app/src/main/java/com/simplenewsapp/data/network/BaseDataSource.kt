@@ -6,16 +6,16 @@ import retrofit2.Response
 
 abstract class BaseDataSource {
 
-    protected suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
+    protected suspend fun <T> getResult(call: suspend () -> Response<T>): ApiResponse<T> {
         try {
             val response = call()
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null) return Resource.success(body)
+                if (body != null) return ApiResponse.success(body)
             }
-            return Resource.error(HttpException(response))
+            return ApiResponse.error(HttpException(response))
         } catch (e: Exception) {
-            return Resource.error(e)
+            return ApiResponse.error(e)
         }
     }
 
